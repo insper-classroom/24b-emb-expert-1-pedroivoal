@@ -57,7 +57,7 @@ int mpu6050_read_gyro(imu_c config, int16_t gyro[3])
     return 1;
 }
 
-int mpu6050_read_temp(imu_c config, int16_t *temp)
+int mpu6050_read_temp(imu_c config, int16_t temp[1])
 {
     uint8_t buffer[2];
 
@@ -65,7 +65,7 @@ int mpu6050_read_temp(imu_c config, int16_t *temp)
     i2c_write_blocking(config.i2c, MPU6050_I2C_DEFAULT, &val, 1, true);
     i2c_read_blocking(config.i2c, MPU6050_I2C_DEFAULT, buffer, 6, false);
 
-    *temp = (buffer[0] << 8 | buffer[1])/340 + 36.53;
+    temp[1] = (buffer[0] << 8 | buffer[1])/340 + 36.53;
 
     return 1;
 }
