@@ -61,11 +61,25 @@ int mpu6050_read_temp(imu_c config, int16_t *temp)
 {
     uint8_t buffer[2];
 
-    uint8_t val = MPUREG_TEMP_OUT_H;
-    i2c_write_blocking(config.i2c, MPU6050_I2C_DEFAULT, &val, 1, true);
-    i2c_read_blocking(config.i2c, MPU6050_I2C_DEFAULT, buffer, 2, false);
+    uint8_t temp_reg_addr = MPUREG_TEMP_OUT_H;
+    
+    // Escreve no registrador de temperatura para iniciar a leitura
+    int ret = i2c_write_blocking(config.i2c, MPU6050_I2C_DEFAULT, &temp_reg_addr, 1, true);
+    if (ret != 1) {
+        return -1;  // erro na escrita
+    }
 
+    // Lê os 2 bytes da temperatura
+    ret = i2c_read_blocking(config.i2c, MPU6050_I2C_DEFAULT, buffer, 2, false);
+    if (ret != 2) {
+        return -2;  // erro na leitura
+    }
+
+    // Combina os 2 bytes de temperatura e armazena no parâmetro temp
     *temp = (buffer[0] << 8 | buffer[1]);
 
-    return 1;
+    // Opcional: Convertendo para graus Celsius (se necessário)
+    // *temp = (*temp / 340.0) + 36.53;
+
+    return 1;  // Sucesso
 }

@@ -49,10 +49,10 @@ void mpu6050_task(void *p)
         FusionAhrsUpdateNoMagnetometer(&ahrs, gyroscope, accelerometer, SAMPLE_PERIOD);
         const FusionEuler euler = FusionQuaternionToEuler(FusionAhrsGetQuaternion(&ahrs));
 
-        // printf("Aceleração: X: %0.2f g, Y: %0.2f g, Z: %0.2f g\n", accelerometer.axis.x, accelerometer.axis.y, accelerometer.axis.z);
-        // printf("Giroscópio: X: %0.2f °/s, Y: %0.2f °/s, Z: %0.2f °/s\n", gyroscope.axis.x, gyroscope.axis.y, gyroscope.axis.z);
+        printf("Aceleração: X: %0.2f g, Y: %0.2f g, Z: %0.2f g\n", accelerometer.axis.x, accelerometer.axis.y, accelerometer.axis.z);
+        printf("Giroscópio: X: %0.2f °/s, Y: %0.2f °/s, Z: %0.2f °/s\n", gyroscope.axis.x, gyroscope.axis.y, gyroscope.axis.z);
         printf("Temperatura: %0.2f °C\n", temp);
-        // printf("Euler: Roll %0.1f, Pitch %0.1f, Yaw %0.1f\n", euler.angle.roll, euler.angle.pitch, euler.angle.yaw);
+        printf("Euler: Roll %0.1f, Pitch %0.1f, Yaw %0.1f\n", euler.angle.roll, euler.angle.pitch, euler.angle.yaw);
 
         vTaskDelay(pdMS_TO_TICKS(10));
     }
